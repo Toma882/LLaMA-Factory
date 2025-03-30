@@ -110,8 +110,8 @@ def save_model(
 def create_export_tab(engine: "Engine") -> dict[str, "Component"]:
     with gr.Row():
         export_size = gr.Slider(minimum=1, maximum=100, value=5, step=1)
-        export_quantization_bit = gr.Dropdown(choices=["none"] + GPTQ_BITS, value="none", info="模型量化位数，可减少内存使用和加速推理。'none'表示不量化；'8'表示8位量化；'4'表示4位量化，大幅降低内存需求但可能影响生成质量。")
-        export_quantization_dataset = gr.Textbox(value="data/c4_demo.json", info="选择用于训练的数据集。可以选择内置数据集或自定义数据集。多个数据集可以同时选择，系统会自动合并。")
+        export_quantization_bit = gr.Dropdown(choices=["none"] + GPTQ_BITS, value="none")
+        export_quantization_dataset = gr.Textbox(value="data/c4_demo.json")
         export_device = gr.Radio(choices=["cpu", "auto"], value="cpu")
         export_legacy_format = gr.Checkbox()
 

@@ -74,9 +74,9 @@ def create_chat_box(
                 submit_btn = gr.Button(variant="primary")
 
             with gr.Column(scale=1):
-                max_new_tokens = gr.Slider(minimum=8, maximum=8192, value=1024, step=1, info="生成回答的最大token数量。设置合适的值避免生成过长或过短的回答。简短任务可设置较小值；需要详细解释的任务可设置较大值。")
-                top_p = gr.Slider(minimum=0.01, maximum=1.0, value=0.7, step=0.01, info="核采样参数，控制生成的多样性。较小的值使生成更确定和保守；较大的值使生成更多样和创造性。测试时推荐使用0.7作为平衡值。")
-                temperature = gr.Slider(minimum=0.01, maximum=1.5, value=0.95, step=0.01, info="温度参数，控制生成的随机性。较小的值使生成更确定性；较大的值使生成更多样化。评估特定能力时建议使用较低温度。")
+                max_new_tokens = gr.Slider(minimum=8, maximum=8192, value=1024, step=1)
+                top_p = gr.Slider(minimum=0.01, maximum=1.0, value=0.7, step=0.01)
+                temperature = gr.Slider(minimum=0.01, maximum=1.5, value=0.95, step=0.01)
                 skip_special_tokens = gr.Checkbox(value=True)
                 escape_html = gr.Checkbox(value=True)
                 clear_btn = gr.Button()

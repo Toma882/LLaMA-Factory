@@ -40,20 +40,20 @@ def create_train_tab(engine: "Engine") -> dict[str, "Component"]:
 
     with gr.Row():
         stages = list(TRAINING_STAGES.keys())
-        training_stage = gr.Dropdown(choices=stages, value=stages[0], scale=1, info="选择训练阶段和方法。'pt'：预训练，从头训练模型；'sft'：监督微调，使用高质量数据进行指令跟随训练；'rm'：奖励模型训练，用于偏好学习；'dpo'：直接偏好优化，直接基于人类偏好优化模型；'ppo'：近端策略优化，基于强化学习方法优化模型。")
-        dataset_dir = gr.Textbox(value=DEFAULT_DATA_DIR, scale=1, info="训练数据所在的文件夹路径。可以是相对路径（如'data/'）或绝对路径。该文件夹应包含预处理好的数据集文件，通常是JSON或JSONL格式。")
-        dataset = gr.Dropdown(multiselect=True, allow_custom_value=True, scale=4, info="选择用于训练的数据集。可以选择内置数据集或自定义数据集。多个数据集可以同时选择，系统会自动合并。")
+        training_stage = gr.Dropdown(choices=stages, value=stages[0], scale=1, tooltip="选择训练阶段和方法。'pt'：预训练，从头训练模型；'sft'：监督微调，使用高质量数据进行指令跟随训练；'rm'：奖励模型训练，用于偏好学习；'dpo'：直接偏好优化，直接基于人类偏好优化模型；'ppo'：近端策略优化，基于强化学习方法优化模型。")
+        dataset_dir = gr.Textbox(value=DEFAULT_DATA_DIR, scale=1, tooltip="训练数据所在的文件夹路径。可以是相对路径（如'data/'）或绝对路径。该文件夹应包含预处理好的数据集文件，通常是JSON或JSONL格式。")
+        dataset = gr.Dropdown(multiselect=True, allow_custom_value=True, scale=4, tooltip="选择用于训练的数据集。可以选择内置数据集或自定义数据集。多个数据集可以同时选择，系统会自动合并。")
         preview_elems = create_preview_box(dataset_dir, dataset)
 
     input_elems.update({training_stage, dataset_dir, dataset})
     elem_dict.update(dict(training_stage=training_stage, dataset_dir=dataset_dir, dataset=dataset, **preview_elems))
 
     with gr.Row():
-        learning_rate = gr.Textbox(value="5e-5", info="AdamW优化器的初始学习率，控制模型参数更新的步长大小。对于LoRA微调，推荐范围：2e-5至2e-4；对于全参数微调，建议使用较小值如5e-6至1e-5。")
-        num_train_epochs = gr.Textbox(value="3.0", info="需要执行的训练总轮数（epoch）。一个epoch表示模型遍历整个训练数据集一次。训练轮数过少可能导致模型欠拟合，过多则可能导致过拟合。")
-        max_grad_norm = gr.Textbox(value="1.0", info="梯度裁剪的阈值，用于防止梯度爆炸。当梯度的L2范数超过此值时，会按比例缩小。默认值1.0适用于大多数情况。")
-        max_samples = gr.Textbox(value="100000", info="训练过程中使用的最大样本数量。设置为较大值（如100000）表示使用全部数据集；设置为较小值可用于快速验证训练流程。")
-        compute_type = gr.Dropdown(choices=["bf16", "fp16", "fp32", "pure_bf16"], value="bf16", info="混合精度训练使用的数据类型。'bf16'：脑浮点格式，介于fp16和fp32之间；'fp16'：半精度浮点；'fp32'：全精度浮点，最稳定但最慢。推荐：首选'bf16'（如果硬件支持）。")
+        learning_rate = gr.Textbox(value="5e-5", tooltip="AdamW优化器的初始学习率，控制模型参数更新的步长大小。对于LoRA微调，推荐范围：2e-5至2e-4；对于全参数微调，建议使用较小值如5e-6至1e-5。")
+        num_train_epochs = gr.Textbox(value="3.0", tooltip="需要执行的训练总轮数（epoch）。一个epoch表示模型遍历整个训练数据集一次。训练轮数过少可能导致模型欠拟合，过多则可能导致过拟合。")
+        max_grad_norm = gr.Textbox(value="1.0", tooltip="梯度裁剪的阈值，用于防止梯度爆炸。当梯度的L2范数超过此值时，会按比例缩小。默认值1.0适用于大多数情况。")
+        max_samples = gr.Textbox(value="100000", tooltip="训练过程中使用的最大样本数量。设置为较大值（如100000）表示使用全部数据集；设置为较小值可用于快速验证训练流程。")
+        compute_type = gr.Dropdown(choices=["bf16", "fp16", "fp32", "pure_bf16"], value="bf16", tooltip="混合精度训练使用的数据类型。'bf16'：脑浮点格式，介于fp16和fp32之间；'fp16'：半精度浮点；'fp32'：全精度浮点，最稳定但最慢。推荐：首选'bf16'（如果硬件支持）。")
 
     input_elems.update({learning_rate, num_train_epochs, max_grad_norm, max_samples, compute_type})
     elem_dict.update(
@@ -67,11 +67,11 @@ def create_train_tab(engine: "Engine") -> dict[str, "Component"]:
     )
 
     with gr.Row():
-        cutoff_len = gr.Slider(minimum=4, maximum=131072, value=2048, step=1, info="输入序列的最大token数。超过此长度的序列会被截断。对于大多数LLM，建议值为1024-2048。对于处理长文本的任务，可适当增加（如4096），但需确保硬件内存足够。")
-        batch_size = gr.Slider(minimum=1, maximum=1024, value=2, step=1, info="每个GPU处理的样本数量。较大的批处理大小可提高训练速度和稳定性，但需要更多GPU内存。对于消费级GPU（如RTX 3090、4090），LoRA微调推荐值：4-8；使用量化（QLoRA）时可尝试增加至8-16。")
-        gradient_accumulation_steps = gr.Slider(minimum=1, maximum=1024, value=8, step=1, info="在执行优化器更新前累积梯度的步数。通过增加此值，可在内存受限的情况下模拟更大的批处理大小。有效批大小 = 批处理大小 × 梯度累积步数。")
-        val_size = gr.Slider(minimum=0, maximum=1, value=0, step=0.001, info="从训练数据中划分出作为验证集的比例。验证集用于评估模型性能和防止过拟合。推荐值通常为0.05-0.1(5%-10%)，设置为0表示不使用验证集。")
-        lr_scheduler_type = gr.Dropdown(choices=[scheduler.value for scheduler in SchedulerType], value="cosine", info="学习率调度器类型，控制学习率在训练过程中的变化方式。'cosine'：余弦衰减，逐渐降低学习率，最为常用；'linear'：线性衰减；'constant'：保持恒定学习率；'constant_with_warmup'：先预热再保持恒定。")
+        cutoff_len = gr.Slider(minimum=4, maximum=131072, value=2048, step=1, tooltip="输入序列的最大token数。超过此长度的序列会被截断。对于大多数LLM，建议值为1024-2048。对于处理长文本的任务，可适当增加（如4096），但需确保硬件内存足够。")
+        batch_size = gr.Slider(minimum=1, maximum=1024, value=2, step=1, tooltip="每个GPU处理的样本数量。较大的批处理大小可提高训练速度和稳定性，但需要更多GPU内存。对于消费级GPU（如RTX 3090、4090），LoRA微调推荐值：4-8；使用量化（QLoRA）时可尝试增加至8-16。")
+        gradient_accumulation_steps = gr.Slider(minimum=1, maximum=1024, value=8, step=1, tooltip="在执行优化器更新前累积梯度的步数。通过增加此值，可在内存受限的情况下模拟更大的批处理大小。有效批大小 = 批处理大小 × 梯度累积步数。")
+        val_size = gr.Slider(minimum=0, maximum=1, value=0, step=0.001, tooltip="从训练数据中划分出作为验证集的比例。验证集用于评估模型性能和防止过拟合。推荐值通常为0.05-0.1(5%-10%)，设置为0表示不使用验证集。")
+        lr_scheduler_type = gr.Dropdown(choices=[scheduler.value for scheduler in SchedulerType], value="cosine", tooltip="学习率调度器类型，控制学习率在训练过程中的变化方式。'cosine'：余弦衰减，逐渐降低学习率，最为常用；'linear'：线性衰减；'constant'：保持恒定学习率；'constant_with_warmup'：先预热再保持恒定。")
 
     input_elems.update({cutoff_len, batch_size, gradient_accumulation_steps, val_size, lr_scheduler_type})
     elem_dict.update(
@@ -86,24 +86,24 @@ def create_train_tab(engine: "Engine") -> dict[str, "Component"]:
 
     with gr.Accordion(open=False) as extra_tab:
         with gr.Row():
-            logging_steps = gr.Slider(minimum=1, maximum=1000, value=5, step=5, info="每两次日志输出间的更新步数。设置较小的值（如5）可以更频繁地看到训练进度，但可能略微影响训练速度。对于大型数据集，可以设置较大的值（如50-100）。")
-            save_steps = gr.Slider(minimum=10, maximum=5000, value=100, step=10, info="保存检查点的步数间隔。较小的值保存更频繁，提供更多恢复点但占用更多磁盘空间；较大的值减少磁盘IO和存储需求。建议值：100-500。")
-            warmup_steps = gr.Slider(minimum=0, maximum=5000, value=0, step=1, info="学习率预热的步数。在这些步骤中，学习率从很小的值逐渐增加到设定值。对于不稳定的训练，设置为总步数的5%-10%可能有帮助。设置为0表示不使用预热。")
-            neftune_alpha = gr.Slider(minimum=0, maximum=10, value=0, step=0.1, info="NEFTune技术中嵌入向量所添加的噪声大小。设置为0表示不使用NEFTune；推荐范围为0.1-1.0。NEFTune可以提高模型的泛化能力，尤其适合小规模数据集训练。")
-            extra_args = gr.Textbox(value='{"optim": "adamw_torch"}', info="以JSON格式传递给训练器的额外参数。常用设置包括优化器选择{'optim': 'adamw_torch'}、SGD动量设置{'momentum': 0.9}等。高级用户可根据需要添加Transformers库支持的任何训练参数。")
+            logging_steps = gr.Slider(minimum=1, maximum=1000, value=5, step=5, tooltip="每两次日志输出间的更新步数。设置较小的值（如5）可以更频繁地看到训练进度，但可能略微影响训练速度。对于大型数据集，可以设置较大的值（如50-100）。")
+            save_steps = gr.Slider(minimum=10, maximum=5000, value=100, step=10, tooltip="保存检查点的步数间隔。较小的值保存更频繁，提供更多恢复点但占用更多磁盘空间；较大的值减少磁盘IO和存储需求。建议值：100-500。")
+            warmup_steps = gr.Slider(minimum=0, maximum=5000, value=0, step=1, tooltip="学习率预热的步数。在这些步骤中，学习率从很小的值逐渐增加到设定值。对于不稳定的训练，设置为总步数的5%-10%可能有帮助。设置为0表示不使用预热。")
+            neftune_alpha = gr.Slider(minimum=0, maximum=10, value=0, step=0.1, tooltip="NEFTune技术中嵌入向量所添加的噪声大小。设置为0表示不使用NEFTune；推荐范围为0.1-1.0。NEFTune可以提高模型的泛化能力，尤其适合小规模数据集训练。")
+            extra_args = gr.Textbox(value='{"optim": "adamw_torch"}', tooltip="以JSON格式传递给训练器的额外参数。常用设置包括优化器选择{'optim': 'adamw_torch'}、SGD动量设置{'momentum': 0.9}等。高级用户可根据需要添加Transformers库支持的任何训练参数。")
 
         with gr.Row():
             with gr.Column():
-                packing = gr.Checkbox(info="启用数据打包，允许在同一序列中包含多个训练样本，提高训练效率。适合固定长度的小样本，但可能影响样本边界的上下文理解。")
-                neat_packing = gr.Checkbox(info="使用改进的数据打包策略，尝试在保证样本边界清晰的情况下实现高效打包。比普通打包有更好的边界处理，但会增加一定计算开销。")
+                packing = gr.Checkbox(tooltip="启用数据打包，允许在同一序列中包含多个训练样本，提高训练效率。适合固定长度的小样本，但可能影响样本边界的上下文理解。")
+                neat_packing = gr.Checkbox(tooltip="使用改进的数据打包策略，尝试在保证样本边界清晰的情况下实现高效打包。比普通打包有更好的边界处理，但会增加一定计算开销。")
 
             with gr.Column():
-                train_on_prompt = gr.Checkbox(info="在训练过程中同时对提示词和回答进行训练。启用此选项可能帮助模型更好地理解指令，但也可能导致模型在生成时混淆用户输入和预期输出的边界。")
-                mask_history = gr.Checkbox(info="在训练过程中屏蔽历史对话内容，只关注当前回合。适用于希望模型更专注于当前问题而不过度依赖对话历史的情况。")
+                train_on_prompt = gr.Checkbox(tooltip="在训练过程中同时对提示词和回答进行训练。启用此选项可能帮助模型更好地理解指令，但也可能导致模型在生成时混淆用户输入和预期输出的边界。")
+                mask_history = gr.Checkbox(tooltip="在训练过程中屏蔽历史对话内容，只关注当前回合。适用于希望模型更专注于当前问题而不过度依赖对话历史的情况。")
 
             with gr.Column():
-                resize_vocab = gr.Checkbox(info="根据训练数据动态调整词汇表大小。对于包含特殊词汇或非英语语言的数据集可能有帮助，但可能增加训练时间和内存使用。")
-                use_llama_pro = gr.Checkbox(info="使用LLaMA Pro优化策略，可能提高模型的训练效率和生成质量。这是一种实验性功能，可能不适用于所有模型架构。")
+                resize_vocab = gr.Checkbox(tooltip="根据训练数据动态调整词汇表大小。对于包含特殊词汇或非英语语言的数据集可能有帮助，但可能增加训练时间和内存使用。")
+                use_llama_pro = gr.Checkbox(tooltip="使用LLaMA Pro优化策略，可能提高模型的训练效率和生成质量。这是一种实验性功能，可能不适用于所有模型架构。")
 
             with gr.Column():
                 report_to = gr.Dropdown(
@@ -111,7 +111,7 @@ def create_train_tab(engine: "Engine") -> dict[str, "Component"]:
                     value=["none"],
                     allow_custom_value=True,
                     multiselect=True,
-                    info="选择训练指标的报告工具。'wandb'：Weight & Biases，提供丰富的可视化和实验跟踪；'tensorboard'：TensorBoard，轻量级本地可视化；'mlflow'/'neptune'：其他实验跟踪平台。选择'none'表示不使用外部报告工具。"
+                    tooltip="选择训练指标的报告工具。'wandb'：Weight & Biases，提供丰富的可视化和实验跟踪；'tensorboard'：TensorBoard，轻量级本地可视化；'mlflow'/'neptune'：其他实验跟踪平台。选择'none'表示不使用外部报告工具。"
                 )
 
     input_elems.update(
@@ -150,9 +150,9 @@ def create_train_tab(engine: "Engine") -> dict[str, "Component"]:
 
     with gr.Accordion(open=False) as freeze_tab:
         with gr.Row():
-            freeze_trainable_layers = gr.Slider(minimum=-128, maximum=128, value=2, step=1, info="可训练的层数。正值表示从末尾开始计算的层数；负值表示从开头计算的层数。例如：设置为2表示只训练最后2层；设置为-2表示只训练前2层。通常模型后面的层与生成能力关系更大。")
-            freeze_trainable_modules = gr.Textbox(value="all", info="指定要训练的模块名称，使用英文逗号分隔。'all'表示所有模块；也可以指定具体模块如'q_proj,k_proj,v_proj'。可通过模型结构分析确定关键模块名称。")
-            freeze_extra_modules = gr.Textbox(info="额外冻结的模块名称，使用英文逗号分隔。指定的模块将不参与训练。常用于冻结不需要微调的组件，如嵌入层(embed)或特定头部(head)。")
+            freeze_trainable_layers = gr.Slider(minimum=-128, maximum=128, value=2, step=1, tooltip="可训练的层数。正值表示从末尾开始计算的层数；负值表示从开头计算的层数。例如：设置为2表示只训练最后2层；设置为-2表示只训练前2层。通常模型后面的层与生成能力关系更大。")
+            freeze_trainable_modules = gr.Textbox(value="all", tooltip="指定要训练的模块名称，使用英文逗号分隔。'all'表示所有模块；也可以指定具体模块如'q_proj,k_proj,v_proj'。可通过模型结构分析确定关键模块名称。")
+            freeze_extra_modules = gr.Textbox(tooltip="额外冻结的模块名称，使用英文逗号分隔。指定的模块将不参与训练。常用于冻结不需要微调的组件，如嵌入层(embed)或特定头部(head)。")
 
     input_elems.update({freeze_trainable_layers, freeze_trainable_modules, freeze_extra_modules})
     elem_dict.update(
@@ -166,18 +166,18 @@ def create_train_tab(engine: "Engine") -> dict[str, "Component"]:
 
     with gr.Accordion(open=False) as lora_tab:
         with gr.Row():
-            lora_rank = gr.Slider(minimum=1, maximum=1024, value=8, step=1, info="LoRA适配器的秩，控制LoRA层的参数量和表达能力。较小的值（如8-16）适合大多数任务，参数量小训练快；较大的值（如32-64）可能提供更好的性能但需要更多内存和计算资源。")
-            lora_alpha = gr.Slider(minimum=1, maximum=2048, value=16, step=1, info="LoRA缩放因子，通常设置为LoRA秩的2倍。控制LoRA更新对原始权重的影响程度。增大此值会增强LoRA的效果，但值过大可能导致训练不稳定。")
-            lora_dropout = gr.Slider(minimum=0, maximum=1, value=0, step=0.01, info="LoRA层的Dropout率，用于防止过拟合。对于小数据集，推荐设置为0.05-0.1；对于大数据集或需要完全拟合的场景，可设为0。")
-            loraplus_lr_ratio = gr.Slider(minimum=0, maximum=64, value=0, step=0.01, info="LoRA Plus中学习率比例因子。设置为0表示不使用LoRA Plus；大于0时启用，建议值为1-8。LoRA Plus可能在某些任务上提供更好的性能，特别是长文本生成。")
-            create_new_adapter = gr.Checkbox(info="创建新的LoRA适配器而不是继续训练现有适配器。当您想要从头开始训练一个新的LoRA模型时选择此项，而不是在现有适配器的基础上继续训练。")
+            lora_rank = gr.Slider(minimum=1, maximum=1024, value=8, step=1, tooltip="LoRA适配器的秩，控制LoRA层的参数量和表达能力。较小的值（如8-16）适合大多数任务，参数量小训练快；较大的值（如32-64）可能提供更好的性能但需要更多内存和计算资源。")
+            lora_alpha = gr.Slider(minimum=1, maximum=2048, value=16, step=1, tooltip="LoRA缩放因子，通常设置为LoRA秩的2倍。控制LoRA更新对原始权重的影响程度。增大此值会增强LoRA的效果，但值过大可能导致训练不稳定。")
+            lora_dropout = gr.Slider(minimum=0, maximum=1, value=0, step=0.01, tooltip="LoRA层的Dropout率，用于防止过拟合。对于小数据集，推荐设置为0.05-0.1；对于大数据集或需要完全拟合的场景，可设为0。")
+            loraplus_lr_ratio = gr.Slider(minimum=0, maximum=64, value=0, step=0.01, tooltip="LoRA Plus中学习率比例因子。设置为0表示不使用LoRA Plus；大于0时启用，建议值为1-8。LoRA Plus可能在某些任务上提供更好的性能，特别是长文本生成。")
+            create_new_adapter = gr.Checkbox(tooltip="创建新的LoRA适配器而不是继续训练现有适配器。当您想要从头开始训练一个新的LoRA模型时选择此项，而不是在现有适配器的基础上继续训练。")
 
         with gr.Row():
-            use_rslora = gr.Checkbox(info="使用Rank-stabilized LoRA (RSLoRA)，一种改进的LoRA变体，在训练过程中通过额外的正则化保持秩的稳定性。可能提高模型性能，特别是对于较高秩值或长时间训练。")
-            use_dora = gr.Checkbox(info="使用DoRA (Weight-Decomposed Low-Rank Adaptation)，可以提高LoRA的表达能力而不增加额外参数。通过分解原始权重矩阵，DoRA可能在某些任务上取得更好的效果。")
-            use_pissa = gr.Checkbox(info="使用PISSA (Part-of-Speech Informed Sensitivity Analysis)，一种关注语言模型中词性信息的微调方法。可能提高模型对语法和语义的理解能力。")
-            lora_target = gr.Textbox(scale=2, info="LoRA将应用的目标模块名称，使用英文逗号分隔。常用值：'q_proj,v_proj'（只对查询和值投影应用LoRA）或'all'（所有线性层）。不同模型架构的模块名可能不同。")
-            additional_target = gr.Textbox(scale=2, info="额外的LoRA目标模块，使用英文逗号分隔。可用于指定非标准模块应用LoRA，如'lm_head'（语言模型头部）或特定于模型架构的其他模块。")
+            use_rslora = gr.Checkbox(tooltip="使用Rank-stabilized LoRA (RSLoRA)，一种改进的LoRA变体，在训练过程中通过额外的正则化保持秩的稳定性。可能提高模型性能，特别是对于较高秩值或长时间训练。")
+            use_dora = gr.Checkbox(tooltip="使用DoRA (Weight-Decomposed Low-Rank Adaptation)，可以提高LoRA的表达能力而不增加额外参数。通过分解原始权重矩阵，DoRA可能在某些任务上取得更好的效果。")
+            use_pissa = gr.Checkbox(tooltip="使用PISSA (Part-of-Speech Informed Sensitivity Analysis)，一种关注语言模型中词性信息的微调方法。可能提高模型对语法和语义的理解能力。")
+            lora_target = gr.Textbox(scale=2, tooltip="LoRA将应用的目标模块名称，使用英文逗号分隔。常用值：'q_proj,v_proj'（只对查询和值投影应用LoRA）或'all'（所有线性层）。不同模型架构的模块名可能不同。")
+            additional_target = gr.Textbox(scale=2, tooltip="额外的LoRA目标模块，使用英文逗号分隔。可用于指定非标准模块应用LoRA，如'lm_head'（语言模型头部）或特定于模型架构的其他模块。")
 
     input_elems.update(
         {
@@ -211,7 +211,7 @@ def create_train_tab(engine: "Engine") -> dict[str, "Component"]:
 
     with gr.Accordion(open=False) as rlhf_tab:
         with gr.Row():
-            pref_beta = gr.Slider(minimum=0, maximum=1, value=0.1, step=0.01, info="Beta参数控制KL散度的权重，平衡模型探索与利用已学习行为的程度。较高的值(如0.1-0.5)使模型更保守，较低的值允许更多探索。一般从0.1开始调整。")
+            pref_beta = gr.Slider(minimum=0, maximum=1, value=0.1, step=0.01)
             pref_ftx = gr.Slider(minimum=0, maximum=10, value=0, step=0.01)
             pref_loss = gr.Dropdown(choices=["sigmoid", "hinge", "ipo", "kto_pair", "orpo", "simpo"], value="sigmoid")
             reward_model = gr.Dropdown(multiselect=True, allow_custom_value=True)
@@ -337,7 +337,7 @@ def create_train_tab(engine: "Engine") -> dict[str, "Component"]:
         with gr.Column(scale=3):
             with gr.Row():
                 current_time = gr.Textbox(visible=False, interactive=False)
-                output_dir = gr.Dropdown(allow_custom_value=True, info="保存评估或训练结果的目录路径。结果将包含详细的指标和生成的文本（如果启用）。留空则使用默认路径。")
+                output_dir = gr.Dropdown(allow_custom_value=True, tooltip="保存评估或训练结果的目录路径。结果将包含详细的指标和生成的文本（如果启用）。留空则使用默认路径。")
                 config_path = gr.Dropdown(allow_custom_value=True)
 
             with gr.Row():
