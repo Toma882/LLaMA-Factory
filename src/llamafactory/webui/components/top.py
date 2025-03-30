@@ -43,7 +43,7 @@ def create_top() -> dict[str, "Component"]:
     with gr.Row():
         quantization_bit = gr.Dropdown(choices=["none", "8", "4"], value="none", allow_custom_value=True, info="模型量化位数，可减少内存使用和加速推理。'none'表示不量化；'8'表示8位量化，平衡性能和质量；'4'表示4位量化，大幅降低内存需求但可能影响生成质量。")
         quantization_method = gr.Dropdown(choices=["bitsandbytes", "hqq", "eetq"], value="bitsandbytes", info="选择量化算法。'bitsandbytes'：通用量化方案，适用于大多数情况；'hqq'：高质量量化，追求更高精度；'eetq'：高效嵌入式量化，适合边缘设备。")
-        template = gr.Dropdown(choices=list(TEMPLATES.keys(), value="default", info="构建提示词时使用的模板格式。不同模型支持不同的对话模板，如'llama2'、'vicuna'、'alpaca'等。正确选择与模型匹配的模板至关重要，否则可能导致生成质量下降。")
+        template = gr.Dropdown(choices=list(TEMPLATES.keys()), value="default", info="构建提示词时使用的模板格式。不同模型支持不同的对话模板，如'llama2'、'vicuna'、'alpaca'等。正确选择与模型匹配的模板至关重要，否则可能导致生成质量下降。")
         rope_scaling = gr.Dropdown(choices=["none", "linear", "dynamic", "yarn", "llama3"], value="none", info="旋转位置编码(RoPE)的缩放方法，用于扩展模型的上下文窗口长度。'none'：不使用扩展；'linear'：线性插值；'dynamic'：动态插值；'yarn'：Yet Another RoPE Extension；'llama3'：专为LLaMA-3模型优化的方法。")
         booster = gr.Dropdown(choices=["auto", "flashattn2", "unsloth", "liger_kernel"], value="auto", info="用于提升训练和推理速度的加速方法。'auto'：自动选择最适合的方法；'flashattn2'：Flash Attention 2加速；'unsloth'：使用Unsloth库加速；'liger_kernel'：Liger内核优化。")
 
