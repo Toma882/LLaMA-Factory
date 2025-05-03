@@ -1,3 +1,7 @@
+# 用途: 使用LoRA方法对Qwen2-VL多模态模型进行监督微调(SFT)
+# 何时使用 当您需要在特定视觉-语言任务上适应Qwen2-VL模型，如图像描述、视觉问答等
+# 目的: 高效微调Qwen2-VL多模态大模型，增强模型在特定视觉任务上的性能和适应性
+
 ### model
 model_name_or_path: Qwen/Qwen2-VL-7B-Instruct
 image_max_pixels: 262144

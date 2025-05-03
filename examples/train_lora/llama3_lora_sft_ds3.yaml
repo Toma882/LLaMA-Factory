@@ -1,3 +1,7 @@
+# 用途: 使用DeepSpeed ZeRO-3优化策略结合LoRA方法对LLaMA-3模型进行监督微调(SFT)
+# 何时使用 当您需要在有限显存条件下训练大型模型，尤其适合单机多卡或多机分布式训练环境
+# 目的: 通过DeepSpeed ZeRO-3内存优化技术，实现更大批量、更高效的训练，同时保持模型性能
+
 ### model
 model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
 trust_remote_code: true

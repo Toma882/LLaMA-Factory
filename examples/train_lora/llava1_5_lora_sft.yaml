@@ -1,3 +1,7 @@
+# 用途: 使用LoRA方法对LLaVA-1.5多模态模型进行监督微调(SFT)
+# 何时使用 当您需要在视觉-语言任务上微调LLaVA模型，处理包含图像和文本的多模态任务
+# 目的: 通过LoRA高效微调多模态大模型，增强模型理解和生成与图像相关文本的能力
+
 ### model
 model_name_or_path: llava-hf/llava-1.5-7b-hf
 trust_remote_code: true

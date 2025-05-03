@@ -1,3 +1,7 @@
+# 用途: 使用即时(On-The-Fly)量化结合LoRA方法对LLaMA-3模型进行监督微调(SFT)
+# 何时使用 当您希望在训练过程中动态量化模型以节省内存，同时保持训练稳定性和模型性能
+# 目的: 通过OTFQ(On-The-Fly Quantization)技术降低训练内存占用，实现大模型在有限资源上的高效微调
+
 ### model
 model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
 quantization_bit: 4

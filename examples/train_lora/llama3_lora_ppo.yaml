@@ -1,3 +1,7 @@
+# 用途: 使用近端策略优化(PPO)算法结合LoRA方法对LLaMA-3模型进行强化学习
+# 何时使用 当您已有SFT模型和奖励模型，希望通过强化学习进一步优化模型以符合人类偏好
+# 目的: 实现基于人类反馈的强化学习(RLHF)中的PPO训练阶段，使模型生成更符合人类偏好的内容
+
 ### model
 model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
 reward_model: saves/llama3-8b/lora/reward

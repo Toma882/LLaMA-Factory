@@ -1,3 +1,7 @@
+# 用途: 使用LoRA方法对LLaMA-3模型进行预训练(Pretrain)或持续预训练
+# 何时使用 当您需要在特定领域数据上继续预训练模型，以增强模型在该领域的基础能力
+# 目的: 通过在领域数据上进行持续预训练，使模型更好地适应特定领域知识，为后续微调奠定基础
+
 ### model
 model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
 trust_remote_code: true

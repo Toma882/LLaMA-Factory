@@ -1,4 +1,7 @@
 {
+  "gold_2x": {
+    "file_name": "gold_2x.json"
+  },
   "identity": {
     "file_name": "identity.json"
   },

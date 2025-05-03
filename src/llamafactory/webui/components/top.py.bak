@@ -31,7 +31,7 @@ if TYPE_CHECKING:
 
 def create_top() -> dict[str, "Component"]:
     with gr.Row():
-        lang = gr.Dropdown(choices=["en", "ru", "zh", "ko", "ja"], value=None, scale=1, info="选择您希望使用的语言。")
+        lang = gr.Dropdown(choices=["en", "ru", "zh", "ko", "ja"], value=None, scale=1, info="选择您希望使用的语言hahahahah。")
         available_models = list(SUPPORTED_MODELS.keys()) + ["Custom"]
         model_name = gr.Dropdown(choices=available_models, value=None, scale=3, info="输入模型名称以检索相应模型。支持从Hugging Face库中选择预训练模型，如'llama2'、'mistral'、'qwen'等。输入关键字后系统会自动搜索匹配的模型。")
         model_path = gr.Textbox(scale=3, info="预训练模型的本地路径或Hugging Face模型标识符。本地路径格式如：'/path/to/model'或'C:\\path\\to\\model'；Hugging Face模型标识符格式如：'meta-llama/Llama-2-7b'。")

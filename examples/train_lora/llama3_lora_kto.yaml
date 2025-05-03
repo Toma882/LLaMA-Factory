@@ -1,3 +1,7 @@
+# 用途: 使用KTO(Kahneman-Tversky Optimization)算法结合LoRA方法对LLaMA-3模型进行偏好对齐
+# 何时使用 当您希望使用比DPO更稳定的偏好优化方法，适用于有偏好对比数据的场景
+# 目的: 通过KTO算法对模型进行偏好对齐，使模型输出更符合人类偏好，同时具有更好的训练稳定性
+
 ### model
 model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
 trust_remote_code: true

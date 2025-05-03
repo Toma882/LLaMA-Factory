@@ -1,3 +1,7 @@
+# 用途: 使用LoRA方法结合Ray分布式训练框架对LLaMA-3模型进行监督微调(SFT)
+# 何时使用 当您拥有多台机器或多GPU环境需要进行分布式训练时，能够加速训练过程并支持更大规模数据
+# 目的: 通过Ray分布式计算框架提高训练效率，实现多机多卡协同训练，加速模型微调过程
+
 ### model
 model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct  # or use local absolute path
 trust_remote_code: true

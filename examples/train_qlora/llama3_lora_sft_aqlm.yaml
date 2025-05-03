@@ -1,3 +1,7 @@
+# 用途: 使用AQLM(Additive Quantization for Language Models)量化结合LoRA方法对LLaMA-3模型进行监督微调(SFT)
+# 何时使用 当您需要极致的模型压缩同时保持良好性能，特别适合资源受限且需要高质量结果的场景
+# 目的: 利用AQLM先进量化技术大幅压缩模型体积，在超低资源条件下实现高质量模型微调和部署
+
 ### model
 model_name_or_path: ISTA-DASLab/Meta-Llama-3-8B-Instruct-AQLM-2Bit-1x16
 trust_remote_code: true

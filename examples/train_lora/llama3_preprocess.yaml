@@ -1,3 +1,7 @@
+# 用途: 对训练数据进行预处理和分词，为后续LLaMA-3模型训练做准备
+# 何时使用 当您需要提前处理大规模数据集以加速后续训练过程时，适用于数据准备阶段
+# 目的: 将原始数据转换为模型可直接使用的tokenized格式，减少训练时的数据处理开销，提高训练效率
+
 ### model
 model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
 trust_remote_code: true

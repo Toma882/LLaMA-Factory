@@ -1,3 +1,7 @@
+# 用途: 使用直接偏好优化(DPO)算法结合LoRA方法对LLaMA-3模型进行偏好对齐
+# 何时使用 当您有成对的偏好数据(好/坏回答对比)，希望无需显式奖励模型直接进行偏好优化
+# 目的: 简化RLHF流程，直接从偏好数据学习，使模型生成符合人类偏好的回答，避免PPO的不稳定性
+
 ### model
 model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
 trust_remote_code: true

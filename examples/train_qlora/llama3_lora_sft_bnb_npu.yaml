@@ -1,3 +1,7 @@
+# 用途: 使用BitsAndBytes量化结合NPU硬件加速对LLaMA-3模型进行LoRA监督微调(SFT)
+# 何时使用 当您使用支持NPU的硬件(如英特尔Gaudi)进行训练，需要优化计算性能和内存使用
+# 目的: 通过BitsAndBytes量化和NPU加速，在特定硬件上实现更快速、更低内存消耗的模型训练
+
 ### model
 model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
 quantization_bit: 4

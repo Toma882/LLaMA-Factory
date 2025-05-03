@@ -1,3 +1,7 @@
+# 用途: 对训练后的LLaMA-3 LoRA模型进行评估和测试
+# 何时使用 当您完成模型训练后需要系统性评估模型性能和能力时使用
+# 目的: 通过标准评测数据集验证模型效果，获取客观性能指标，帮助模型选择和迭代优化
+
 ### model
 model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
 adapter_name_or_path: saves/llama3-8b/lora/sft

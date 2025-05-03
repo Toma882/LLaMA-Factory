@@ -1,3 +1,7 @@
+# 用途: 使用DPO算法结合LoRA方法对Qwen2-VL多模态模型进行偏好对齐
+# 何时使用 当您有多模态(图文)偏好数据集，希望直接优化Qwen2-VL模型以符合人类偏好
+# 目的: 让多模态模型通过DPO学习人类对视觉-语言输出的偏好，提升图像理解和描述质量
+
 ### model
 model_name_or_path: Qwen/Qwen2-VL-7B-Instruct
 image_max_pixels: 262144

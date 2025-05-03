@@ -1,3 +1,7 @@
+# 用途: 使用AWQ(Activation-aware Weight Quantization)量化结合LoRA方法对LLaMA-3模型进行监督微调(SFT)
+# 何时使用 当您需要在低资源环境下保持高推理性能，同时进行效果良好的微调
+# 目的: 利用AWQ量化技术降低模型参数位宽，在保持模型精度的同时实现高效微调和推理加速
+
 ### model
 model_name_or_path: TechxGenus/Meta-Llama-3-8B-Instruct-AWQ
 trust_remote_code: true

@@ -1,3 +1,7 @@
+# 用途: 使用LoRA方法训练LLaMA-3模型的奖励模型(Reward Model)
+# 何时使用 当您需要构建强化学习训练流程(如RLHF)中的奖励模型，用于评估生成内容质量
+# 目的: 训练一个能够对模型输出质量进行打分的奖励模型，为后续基于人类反馈的强化学习提供基础
+
 ### model
 model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
 trust_remote_code: true

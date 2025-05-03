@@ -1,3 +1,7 @@
+# 用途: 使用LoRA方法对GPTQ量化版LLaMA-3模型进行监督微调(SFT)
+# 何时使用 当您需要在低显存环境(如消费级GPU)上微调LLaMA-3模型，同时保持较高性能
+# 目的: 结合GPTQ量化和LoRA技术，在极低资源条件下实现高质量模型微调，降低硬件门槛
+
 ### model
 model_name_or_path: TechxGenus/Meta-Llama-3-8B-Instruct-GPTQ
 trust_remote_code: true
